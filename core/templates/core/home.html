@@ -1,0 +1,213 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<style>
+body {
+    color: #fff;
+    background: #121212;
+    scroll-behavior: smooth;
+}
+
+/* HERO */
+.hero {
+    height: 90vh;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
+    url('https://images.unsplash.com/photo-1504754524776-8f4f37790ca0') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 20px;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.hero h1 {
+    font-size: 60px;
+    font-weight: 800;
+}
+
+.hero p {
+    font-size: 18px;
+    margin: 15px 0;
+    opacity: 0.9;
+}
+
+/* BUTTON */
+.btn-main {
+    background: linear-gradient(45deg, #ffc107, #ff9800);
+    border: none;
+    color: black;
+    padding: 10px 25px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-main:hover {
+    transform: scale(1.05);
+}
+
+/* SECTION */
+.section-title {
+    text-align: center;
+    margin: 60px 0 25px;
+    font-weight: 700;
+}
+
+/* CARD */
+.card {
+    background: #1c1c1c;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: 0.4s;
+    border: 1px solid transparent;
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border: 1px solid #ffc107;
+}
+
+.card img {
+    height: 220px;
+    object-fit: cover;
+}
+
+.price {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+/* TOAST */
+.toast-box {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #ffc107;
+    color: black;
+    padding: 12px 18px;
+    border-radius: 10px;
+    display: none;
+    font-weight: 600;
+    z-index: 999;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+</style>
+
+<!-- HERO -->
+<div class="hero mb-5">
+    <div>
+        <h1 id="heroText">Fluffy Pancakes Made With Love</h1>
+        <p>Fresh • Homemade • Delicious</p>
+        <a href="{% url 'menu' %}" class="btn btn-main">Order Now</a>
+    </div>
+</div>
+
+<!-- POPULAR -->
+<h2 class="section-title">🔥 Popular Pancakes</h2>
+
+<div class="row g-4">
+    {% for item in popular_items %}
+    <div class="col-md-4">
+        <div class="card">
+            <img src="{{ item.image.url }}">
+            <div class="card-body text-center">
+                <h5>{{ item.name }}</h5>
+                <p class="price">₹{{ item.price }}</p>
+                <button class="btn btn-main btn-sm add-cart-btn" data-name="{{ item.name }}">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- MENU -->
+<h2 class="section-title">🍽 Our Menu</h2>
+
+<div class="row g-4">
+    {% for item in menu_items %}
+    <div class="col-md-3">
+        <div class="card">
+            <img src="{{ item.image.url }}">
+            <div class="card-body text-center">
+                <h6>{{ item.name }}</h6>
+                <p class="price">₹{{ item.price }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- CTA -->
+<div class="text-center my-5">
+    <h3 id="ctaText">Ready to Taste Happiness? 🥞</h3>
+    <a href="{% url 'menu' %}" class="btn btn-main mt-3">Order Now</a>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast-box">Added to Cart 🛒</div>
+
+<!-- JAVASCRIPT -->
+<script>
+
+// 🔹 Hero text animation (dynamic typing feel)
+const texts = [
+    "Fluffy Pancakes Made With Love",
+    "Freshly Made Just For You",
+    "Taste Happiness Every Bite"
+];
+
+// for changing the banner texts for every 3seconds
+let i = 0;
+setInterval(() => {
+    document.getElementById("heroText").innerText = texts[i];
+    i = (i + 1) % texts.length;
+}, 3000);
+
+
+// 🔹 Add to cart toast
+const buttons = document.querySelectorAll(".add-cart-btn");
+const toast = document.getElementById("toast");
+
+buttons.forEach(btn => {
+    btn.addEventListener("click", function () {
+        toast.innerText = this.dataset.name + " added to cart 🛒";
+        toast.style.display = "block";
+
+        setTimeout(() => {
+            toast.style.display = "none";
+        }, 2000);
+    });
+});
+
+
+// 🔹 Scroll animation (fade in cards)
+const cards = document.querySelectorAll(".card");
+
+window.addEventListener("scroll", () => {
+    cards.forEach(card => {
+        const top = card.getBoundingClientRect().top;
+        if (top < window.innerHeight - 50) {
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
+        }
+    });
+});
+
+cards.forEach(card => {
+    card.style.opacity = "0";
+    card.style.transform = "translateY(30px)";
+    card.style.transition = "0.5s";
+});
+
+</script>
+
+{% endblock %}

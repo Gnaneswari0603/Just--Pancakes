@@ -1,0 +1,277 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<style>
+body {
+    color: #fff;
+    background: #121212;
+}
+
+.payment-title {
+    text-align: center;
+    margin: 40px 0 25px;
+    font-weight: 700;
+    font-size: 32px;
+}
+
+.payment-box {
+    max-width: 550px;
+    margin: 0 auto;
+    background: rgba(28, 28, 28, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.amount-box {
+    text-align: center;
+    background: #252525;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+.order-id {
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+.amount-label {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.amount {
+    font-size: 36px;
+    font-weight: 700;
+    color: #ffc107;
+}
+
+.btn-main {
+    background: linear-gradient(45deg, #ffc107, #ff9800);
+    border: none;
+    color: black;
+    padding: 14px;
+    border-radius: 30px;
+    width: 100%;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.btn-main:hover {
+    opacity: 0.9;
+}
+
+.note {
+    text-align: center;
+    color: #aaa;
+    margin-top: 20px;
+    font-size: 14px;
+}
+</style>
+
+
+<h2 class="payment-title">
+    💳 Online Payment
+</h2>
+
+
+<div class="payment-box">
+
+    <!-- ORDER AMOUNT -->
+
+    <div class="amount-box">
+
+        <div class="order-id">
+            Order #{{ order.id }}
+        </div>
+
+        <div class="amount-label">
+            Amount to Pay
+        </div>
+
+        <div class="amount">
+            ₹{{ order.total }}
+        </div>
+
+    </div>
+
+
+    <!-- PAYMENT BUTTON -->
+
+    <button
+        type="button"
+        id="payButton"
+        class="btn-main"
+    >
+        Pay ₹{{ order.total }} 🚀
+    </button>
+
+
+    <div class="note">
+        Secure payment powered by Razorpay
+    </div>
+
+</div>
+
+
+<!-- RAZORPAY CHECKOUT -->
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+<script>
+
+document.getElementById("payButton").onclick = function () {
+
+    var options = {
+
+        // Public Razorpay Key ID
+        key: "{{ razorpay_key_id }}",
+
+        // Amount in paise
+        amount: "{{ amount }}",
+
+        currency: "INR",
+
+        name: "Just Pancakes",
+
+        description: "Pancake Order #{{ order.id }}",
+
+        order_id: "{{ razorpay_order_id }}",
+
+        handler: function (response) {
+
+            // Send Razorpay payment details
+            // to Django for server-side verification.
+
+            fetch("{% url 'verify_payment' %}", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    razorpay_order_id:
+                        response.razorpay_order_id,
+
+                    razorpay_payment_id:
+                        response.razorpay_payment_id,
+
+                    razorpay_signature:
+                        response.razorpay_signature
+
+                })
+
+            })
+
+            .then(function (response) {
+                return response.json();
+            })
+
+            .then(function (data) {
+
+                if (data.status === "success") {
+
+                    // Payment was verified by Django.
+                    // Now clear the browser cart.
+
+                    localStorage.removeItem("cart");
+
+                    // Go to success page.
+
+                    window.location.href =
+                        "{% url 'success' %}";
+
+                } else {
+
+                    alert(
+                        "Payment verification failed. Please contact us."
+                    );
+
+                }
+
+            })
+
+            .catch(function (error) {
+
+                console.error(
+                    "Payment verification error:",
+                    error
+                );
+
+                alert(
+                    "Something went wrong while verifying the payment."
+                );
+
+            });
+
+        },
+
+        prefill: {
+
+            name: "{{ order.name }}",
+
+            contact: "{{ order.phone }}"
+
+        },
+
+        theme: {
+
+            color: "#ffc107"
+
+        },
+
+        modal: {
+
+            ondismiss: function () {
+
+                console.log(
+                    "Razorpay payment window closed."
+                );
+
+            }
+
+        }
+
+    };
+
+
+    // Create Razorpay Checkout
+
+    var razorpay = new Razorpay(options);
+
+
+    // Handle payment failure
+
+    razorpay.on(
+        "payment.failed",
+        function (response) {
+
+            console.error(
+                "Payment failed:",
+                response.error
+            );
+
+            alert(
+                "Payment failed. Please try again."
+            );
+
+        }
+    );
+
+
+    // Open Razorpay
+
+    razorpay.open();
+
+};
+
+</script>
+
+{% endblock %}

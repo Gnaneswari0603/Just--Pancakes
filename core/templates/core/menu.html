@@ -1,0 +1,2520 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #121212;
+    color: white;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
+
+.menu-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.menu-hero {
+    min-height: 55vh;
+
+    border-radius: 25px;
+
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.60),
+            rgba(0, 0, 0, 0.80)
+        ),
+        url("https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1600")
+        center / cover no-repeat;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    margin-bottom: 55px;
+
+    padding: 40px 20px;
+}
+
+.menu-hero-content {
+    max-width: 800px;
+}
+
+.menu-hero h1 {
+    font-size: 60px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin: 20px 0 15px;
+}
+
+.menu-hero p {
+    color: #dddddd;
+    font-size: 18px;
+    margin: 0;
+}
+
+
+/* =========================================================
+   BADGE
+========================================================= */
+
+.badge-custom {
+    display: inline-block;
+
+    background: #ffc107;
+    color: #111;
+
+    padding: 7px 14px;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+.section-title {
+    font-size: 32px;
+    font-weight: 700;
+
+    margin: 0 0 25px;
+
+    color: white;
+}
+
+
+/* =========================================================
+   PANCAKE CAROUSEL
+========================================================= */
+
+.pancake-carousel {
+
+    position: relative;
+
+    width: 100%;
+
+    margin-bottom: 65px;
+
+    padding: 0 5px;
+}
+
+
+/* =========================================================
+   PANCAKE SLIDER
+========================================================= */
+
+.pancake-grid {
+
+    display: flex;
+
+    flex-wrap: nowrap;
+
+    gap: 25px;
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    overflow-y: hidden;
+
+    scroll-behavior: smooth;
+
+    scroll-snap-type: x mandatory;
+
+    scrollbar-width: none;
+
+    -ms-overflow-style: none;
+
+    padding: 5px 5px 15px;
+
+    cursor: grab;
+}
+
+
+/* Hide scrollbar in Chrome / Edge */
+
+.pancake-grid::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* Pancake dragging */
+
+.pancake-grid.dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+}
+
+
+/* =========================================================
+   PANCAKE CARDS
+========================================================= */
+
+.pancake-grid .product-card {
+
+    flex: 0 0 calc(
+        (100% - 75px) / 4
+    );
+
+    min-width: 0;
+
+    scroll-snap-align: start;
+}
+
+
+/* =========================================================
+   DESSERT CAROUSEL
+========================================================= */
+
+.dessert-carousel {
+
+    position: relative;
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 50px;
+}
+
+
+/* =========================================================
+   DESSERT SLIDER
+========================================================= */
+
+.dessert-grid {
+
+    display: flex;
+
+    flex-wrap: nowrap;
+
+    gap: 25px;
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    overflow-y: hidden;
+
+    scroll-behavior: smooth;
+
+    scroll-snap-type: x mandatory;
+
+    scrollbar-width: none;
+
+    -ms-overflow-style: none;
+
+    padding: 5px 5px 15px;
+
+    cursor: grab;
+}
+
+
+/* Hide scrollbar in Chrome / Edge */
+
+.dessert-grid::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* Dessert dragging */
+
+.dessert-grid.dragging {
+    cursor: grabbing;
+
+    scroll-behavior: auto;
+}
+
+
+/* =========================================================
+   DESSERT CARDS
+========================================================= */
+
+.dessert-grid .product-card {
+
+    flex: 0 0 calc(
+        (100% - 75px) / 4
+    );
+
+    min-width: 0;
+
+    scroll-snap-align: start;
+}
+
+
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
+
+.product-card {
+
+    background: #1d1d1d;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(255,255,255,0.06);
+
+    width: 100%;
+
+    height: 100%;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.product-card:hover {
+
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.45);
+}
+
+
+/* =========================================================
+   PRODUCT IMAGE
+========================================================= */
+
+.product-card img {
+
+    width: 100%;
+
+    height: 220px;
+
+    object-fit: cover;
+
+    display: block;
+
+    background: #2a2a2a;
+}
+
+
+/* =========================================================
+   CARD BODY
+========================================================= */
+
+.card-body {
+
+    padding: 20px;
+
+    text-align: center;
+}
+
+.card-title {
+
+    color: white;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    margin: 12px 0 10px;
+
+    line-height: 1.3;
+}
+
+.price {
+
+    color: #ffc107;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    margin: 0 0 16px;
+}
+
+
+/* =========================================================
+   ADD TO CART BUTTON
+========================================================= */
+
+.btn-main {
+
+    width: 100%;
+
+    background: #ffc107;
+
+    border: none;
+
+    color: #111;
+
+    padding: 11px 18px;
+
+    border-radius: 30px;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.btn-main:hover {
+
+    background: #ffca2c;
+
+    transform: scale(1.02);
+}
+
+
+/* =========================================================
+   PANCAKE CAROUSEL ARROWS
+========================================================= */
+
+.carousel-btn {
+
+    position: absolute;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 48px;
+
+    height: 48px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #ffc107;
+
+    color: #111;
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    z-index: 20;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.45);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.carousel-btn:hover {
+
+    background: #ffca2c;
+
+    transform:
+        translateY(-50%)
+        scale(1.08);
+}
+
+.carousel-prev {
+
+    left: -18px;
+}
+
+.carousel-next {
+
+    right: -18px;
+}
+
+
+/* =========================================================
+   DESSERT CAROUSEL ARROWS
+========================================================= */
+
+.dessert-carousel-btn {
+
+    flex: 0 0 48px;
+
+    width: 48px;
+
+    height: 48px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #ffc107;
+
+    color: #111;
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    z-index: 20;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.45);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.dessert-carousel-btn:hover {
+
+    background: #ffca2c;
+
+    transform: scale(1.08);
+}
+
+
+/* =========================================================
+   FLOATING CART
+========================================================= */
+
+.floating-cart {
+
+    position: fixed;
+
+    right: 25px;
+
+    bottom: 25px;
+
+    background: #ffc107;
+
+    color: #111;
+
+    padding: 14px 20px;
+
+    border-radius: 50px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    z-index: 9999;
+
+    box-shadow:
+        0 6px 25px rgba(0,0,0,0.45);
+
+    transition:
+        transform 0.2s ease;
+}
+
+.floating-cart:hover {
+
+    transform: translateY(-3px);
+}
+
+.cart-count {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 25px;
+
+    height: 25px;
+
+    background: #111;
+
+    color: white;
+
+    border-radius: 50%;
+
+    margin-left: 8px;
+
+    padding: 3px 7px;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1200px) {
+
+
+    /* PANCAKES */
+
+    .pancake-grid .product-card {
+
+        flex: 0 0 calc(
+            (100% - 50px) / 3
+        );
+    }
+
+
+    /* DESSERTS */
+
+    .dessert-grid .product-card {
+
+        flex: 0 0 calc(
+            (100% - 50px) / 3
+        );
+    }
+
+
+    .menu-hero h1 {
+
+        font-size: 52px;
+    }
+}
+
+
+/* =========================================================
+   SMALL TABLET
+========================================================= */
+
+@media (max-width: 992px) {
+
+
+    /* PANCAKES */
+
+    .pancake-grid .product-card {
+
+        flex: 0 0 calc(
+            (100% - 25px) / 2
+        );
+    }
+
+
+    /* DESSERTS */
+
+    .dessert-grid .product-card {
+
+        flex: 0 0 calc(
+            (100% - 25px) / 2
+        );
+    }
+
+
+    .menu-hero {
+
+        min-height: 45vh;
+    }
+
+
+    .menu-hero h1 {
+
+        font-size: 45px;
+    }
+
+
+    .section-title {
+
+        font-size: 28px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 576px) {
+
+
+    .menu-container {
+
+        padding: 12px;
+    }
+
+
+    /* PANCAKE CAROUSEL */
+
+    .pancake-grid {
+
+        gap: 18px;
+
+        padding-left: 3px;
+
+        padding-right: 3px;
+    }
+
+
+    .pancake-grid .product-card {
+
+        flex: 0 0 85%;
+    }
+
+
+    /* DESSERT CAROUSEL */
+
+    .dessert-carousel {
+
+        gap: 8px;
+    }
+
+
+    .dessert-grid {
+
+        gap: 18px;
+
+        padding-left: 3px;
+
+        padding-right: 3px;
+    }
+
+
+    .dessert-grid .product-card {
+
+        flex: 0 0 85%;
+    }
+
+
+    .menu-hero {
+
+        min-height: 40vh;
+
+        border-radius: 18px;
+
+        margin-bottom: 40px;
+    }
+
+
+    .menu-hero h1 {
+
+        font-size: 34px;
+    }
+
+
+    .menu-hero p {
+
+        font-size: 14px;
+    }
+
+
+    .section-title {
+
+        font-size: 24px;
+    }
+
+
+    .product-card img {
+
+        height: 230px;
+    }
+
+
+    /* MOBILE PANCAKE ARROWS */
+
+    .carousel-btn {
+
+        width: 40px;
+
+        height: 40px;
+
+        font-size: 24px;
+    }
+
+
+    .carousel-prev {
+
+        left: -5px;
+    }
+
+
+    .carousel-next {
+
+        right: -5px;
+    }
+
+
+    /* MOBILE DESSERT ARROWS */
+
+    .dessert-carousel-btn {
+
+        flex: 0 0 40px;
+
+        width: 40px;
+
+        height: 40px;
+
+        font-size: 24px;
+    }
+
+
+    /* FLOATING CART */
+
+    .floating-cart {
+
+        right: 15px;
+
+        bottom: 15px;
+
+        padding: 12px 17px;
+    }
+}
+
+</style>
+
+
+<!-- =====================================================
+     MAIN CONTAINER
+===================================================== -->
+
+<div class="menu-container">
+
+
+    <!-- =================================================
+         HERO
+    ================================================== -->
+
+    <div class="menu-hero">
+
+        <div class="menu-hero-content">
+
+            <span class="badge-custom">
+                FRESH • HOT • DELICIOUS
+            </span>
+
+            <h1>
+                JUST PANCAKES
+            </h1>
+
+            <p>
+                Freshly made pancakes & desserts
+                delivered with love
+            </p>
+
+        </div>
+
+    </div>
+
+
+<!-- =================================================
+     SIGNATURE PANCAKES
+================================================= -->
+
+<h2 class="section-title">
+    🥞 Signature Pancakes
+</h2>
+
+
+<div class="pancake-carousel">
+
+    <!-- LEFT BUTTON -->
+
+    <button
+        type="button"
+        class="carousel-btn carousel-prev"
+        id="pancake-prev"
+    >
+        ‹
+    </button>
+
+
+    <!-- PANCAKE CAROUSEL -->
+
+    <div class="pancake-grid" id="pancake-grid">
+
+
+        <!-- ================= PRODUCT 1 ================= -->
+
+        <div
+            class="product-card"
+            data-id="1"
+            data-name="Chocolate Pancake"
+            data-price="179"
+            data-image="https://images.unsplash.com/photo-1550317138-10000687a72b?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1550317138-10000687a72b?w=500"
+                alt="Chocolate Pancake"
+            >
+
+            <div class="card-body">
+
+                <span class="badge-custom">
+                    Best Seller
+                </span>
+
+                <h3 class="card-title">
+                    Chocolate Pancake
+                </h3>
+
+                <p class="price">
+                    ₹179
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 2 ================= -->
+
+        <div
+            class="product-card"
+            data-id="2"
+            data-name="Strawberry Bliss"
+            data-price="189"
+            data-image="https://images.unsplash.com/photo-1506086679525-9c6b9c2e5c73?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1506086679525-9c6b9c2e5c73?w=500"
+                alt="Strawberry Bliss"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Strawberry Bliss
+                </h3>
+
+                <p class="price">
+                    ₹189
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 3 ================= -->
+
+        <div
+            class="product-card"
+            data-id="3"
+            data-name="Blueberry Pancake"
+            data-price="169"
+            data-image="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=500"
+                alt="Blueberry Pancake"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Blueberry Pancake
+                </h3>
+
+                <p class="price">
+                    ₹169
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 4 ================= -->
+
+        <div
+            class="product-card"
+            data-id="4"
+            data-name="Honey Butter Pancake"
+            data-price="139"
+            data-image="https://images.unsplash.com/photo-1525755662778-989d0524087e?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1525755662778-989d0524087e?w=500"
+                alt="Honey Butter Pancake"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Honey Butter Pancake
+                </h3>
+
+                <p class="price">
+                    ₹139
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 5 ================= -->
+
+        <div
+            class="product-card"
+            data-id="5"
+            data-name="Nutella Pancake"
+            data-price="199"
+            data-image="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500"
+                alt="Nutella Pancake"
+            >
+
+            <div class="card-body">
+
+                <span class="badge-custom">
+                    Popular
+                </span>
+
+                <h3 class="card-title">
+                    Nutella Pancake
+                </h3>
+
+                <p class="price">
+                    ₹199
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 6 ================= -->
+
+        <div
+            class="product-card"
+            data-id="6"
+            data-name="Oreo Pancake"
+            data-price="189"
+            data-image="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500"
+                alt="Oreo Pancake"
+            >
+
+            <div class="card-body">
+
+                <span class="badge-custom">
+                    Trending
+                </span>
+
+                <h3 class="card-title">
+                    Oreo Pancake
+                </h3>
+
+                <p class="price">
+                    ₹189
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 7 ================= -->
+
+        <div
+            class="product-card"
+            data-id="7"
+            data-name="Caramel Pancake"
+            data-price="179"
+            data-image="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500"
+                alt="Caramel Pancake"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Caramel Pancake
+                </h3>
+
+                <p class="price">
+                    ₹179
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 8 ================= -->
+
+        <div
+            class="product-card"
+            data-id="8"
+            data-name="Banana Choco Pancake"
+            data-price="169"
+            data-image="https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=500"
+                alt="Banana Choco Pancake"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Banana Choco Pancake
+                </h3>
+
+                <p class="price">
+                    ₹169
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 9 ================= -->
+
+        <div
+            class="product-card"
+            data-id="9"
+            data-name="White Chocolate Pancake"
+            data-price="209"
+            data-image="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500"
+                alt="White Chocolate Pancake"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    White Chocolate Pancake
+                </h3>
+
+                <p class="price">
+                    ₹209
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 10 ================= -->
+
+        <div
+            class="product-card"
+            data-id="10"
+            data-name="Lotus Biscoff Pancake"
+            data-price="229"
+            data-image="https://images.unsplash.com/photo-1575853121743-60c24f0a7502?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1575853121743-60c24f0a7502?w=500"
+                alt="Lotus Biscoff Pancake"
+            >
+
+            <div class="card-body">
+
+                <span class="badge-custom">
+                    Premium
+                </span>
+
+                <h3 class="card-title">
+                    Lotus Biscoff Pancake
+                </h3>
+
+                <p class="price">
+                    ₹229
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- RIGHT BUTTON -->
+
+    <button
+        type="button"
+        class="carousel-btn carousel-next"
+        id="pancake-next"
+    >
+        ›
+    </button>
+
+</div>
+
+
+  <!-- =================================================
+     DESSERTS
+================================================== -->
+
+<h2 class="section-title">
+    🍫 Desserts
+</h2>
+
+
+<div class="dessert-carousel">
+
+
+    <!-- PREVIOUS BUTTON -->
+
+    <button
+        type="button"
+        class="dessert-carousel-btn dessert-prev"
+        id="dessert-prev"
+    >
+        ‹
+    </button>
+
+
+
+    <!-- DESSERTS GRID -->
+
+    <div
+        class="dessert-grid"
+        id="dessert-grid"
+    >
+
+
+        <!-- ================= PRODUCT 5 ================= -->
+
+        <div
+            class="product-card"
+            data-id="5"
+            data-name="Walnut Brownie"
+            data-price="149"
+            data-image="https://images.unsplash.com/photo-1586985289906-406988974504?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1586985289906-406988974504?w=500"
+                alt="Walnut Brownie"
+                onerror="this.src='https://via.placeholder.com/500x300?text=Walnut+Brownie'"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Walnut Brownie
+                </h3>
+
+                <p class="price">
+                    ₹149
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 6 ================= -->
+
+        <div
+            class="product-card"
+            data-id="6"
+            data-name="Nutella Pancake"
+            data-price="179"
+            data-image="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500"
+                alt="Nutella Pancake"
+                onerror="this.src='https://via.placeholder.com/500x300?text=Nutella+Pancake'"
+            >
+
+            <div class="card-body">
+
+                <span class="badge-custom">
+                    Trending
+                </span>
+
+                <h3 class="card-title">
+                    Nutella Pancake
+                </h3>
+
+                <p class="price">
+                    ₹179
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 7 ================= -->
+
+        <div
+            class="product-card"
+            data-id="7"
+            data-name="Chocolate Cake"
+            data-price="199"
+            data-image="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500"
+                alt="Chocolate Cake"
+                onerror="this.src='https://via.placeholder.com/500x300?text=Chocolate+Cake'"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Chocolate Cake
+                </h3>
+
+                <p class="price">
+                    ₹199
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 8 ================= -->
+
+        <div
+            class="product-card"
+            data-id="8"
+            data-name="Red Velvet Cake"
+            data-price="219"
+            data-image="https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=500"
+                alt="Red Velvet Cake"
+                onerror="this.src='https://via.placeholder.com/500x300?text=Red+Velvet+Cake'"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Red Velvet Cake
+                </h3>
+
+                <p class="price">
+                    ₹219
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 9 ================= -->
+
+        <div
+            class="product-card"
+            data-id="9"
+            data-name="Brownie Sundae"
+            data-price="189"
+            data-image="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500"
+                alt="Brownie Sundae"
+                onerror="this.src='https://via.placeholder.com/500x300?text=Brownie+Sundae'"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Brownie Sundae
+                </h3>
+
+                <p class="price">
+                    ₹189
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 10 ================= -->
+
+        <div
+            class="product-card"
+            data-id="10"
+            data-name="Chocolate Mousse"
+            data-price="159"
+            data-image="https://images.unsplash.com/photo-1541783245831-57d6fb0926d3?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1541783245831-57d6fb0926d3?w=500"
+                alt="Chocolate Mousse"
+                onerror="this.src='https://via.placeholder.com/500x300?text=Chocolate+Mousse'"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Chocolate Mousse
+                </h3>
+
+                <p class="price">
+                    ₹159
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 11 ================= -->
+
+        <div
+            class="product-card"
+            data-id="11"
+            data-name="Classic Cheesecake"
+            data-price="229"
+            data-image="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500"
+                alt="Classic Cheesecake"
+                onerror="this.src='https://via.placeholder.com/500x300?text=Cheesecake'"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Classic Cheesecake
+                </h3>
+
+                <p class="price">
+                    ₹229
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 12 ================= -->
+
+        <div
+            class="product-card"
+            data-id="12"
+            data-name="Classic Tiramisu"
+            data-price="249"
+            data-image="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=500"
+                alt="Classic Tiramisu"
+                onerror="this.src='https://via.placeholder.com/500x300?text=Tiramisu'"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Classic Tiramisu
+                </h3>
+
+                <p class="price">
+                    ₹249
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 13 ================= -->
+
+        <div
+            class="product-card"
+            data-id="13"
+            data-name="Chocolate Donut"
+            data-price="99"
+            data-image="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=500"
+                alt="Chocolate Donut"
+                onerror="this.src='https://via.placeholder.com/500x300?text=Chocolate+Donut'"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Chocolate Donut
+                </h3>
+
+                <p class="price">
+                    ₹99
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 14 ================= -->
+
+        <div
+            class="product-card"
+            data-id="14"
+            data-name="Strawberry Cream Cake"
+            data-price="209"
+            data-image="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=500"
+                alt="Strawberry Cream Cake"
+                onerror="this.src='https://via.placeholder.com/500x300?text=Strawberry+Cake'"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Strawberry Cream Cake
+                </h3>
+
+                <p class="price">
+                    ₹209
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 15 ================= -->
+
+        <div
+            class="product-card"
+            data-id="15"
+            data-name="Chocolate Lava Cake"
+            data-price="179"
+            data-image="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500"
+                alt="Chocolate Lava Cake"
+                onerror="this.src='https://via.placeholder.com/500x300?text=Lava+Cake'"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Chocolate Lava Cake
+                </h3>
+
+                <p class="price">
+                    ₹179
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT 16 ================= -->
+
+        <div
+            class="product-card"
+            data-id="16"
+            data-name="Chocolate Ice Cream"
+            data-price="129"
+            data-image="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500"
+        >
+
+            <img
+                src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500"
+                alt="Chocolate Ice Cream"
+                onerror="this.src='https://via.placeholder.com/500x300?text=Ice+Cream'"
+            >
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    Chocolate Ice Cream
+                </h3>
+
+                <p class="price">
+                    ₹129
+                </p>
+
+                <button
+                    type="button"
+                    class="btn-main add-to-cart"
+                >
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- NEXT BUTTON -->
+
+    <button
+        type="button"
+        class="dessert-carousel-btn dessert-next"
+        id="dessert-next"
+    >
+        ›
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     FLOATING CART
+===================================================== -->
+
+<div
+    class="floating-cart"
+    id="floating-cart"
+>
+
+    🛒 Cart
+
+    <span
+        class="cart-count"
+        id="cart-count"
+    >
+        0
+    </span>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* =========================================
+       UPDATE CART COUNT
+    ========================================= */
+
+    updateCartCount();
+
+
+
+    /* =========================================
+       ADD TO CART BUTTONS
+    ========================================= */
+
+    const buttons =
+        document.querySelectorAll(".add-to-cart");
+
+
+    buttons.forEach(function (button) {
+
+        button.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+
+                const card =
+                    button.closest(".product-card");
+
+
+                if (!card) {
+                    return;
+                }
+
+
+                const product = {
+
+                    id: card.dataset.id,
+
+                    name: card.dataset.name,
+
+                    price:
+                        parseInt(
+                            card.dataset.price
+                        ) || 0,
+
+                    image:
+                        card.dataset.image,
+
+                    qty: 1
+
+                };
+
+
+                let cart =
+                    JSON.parse(
+                        localStorage.getItem("cart")
+                    ) || [];
+
+
+                const existingProduct =
+                    cart.find(function (item) {
+
+                        return item.id === product.id;
+
+                    });
+
+
+                if (existingProduct) {
+
+                    existingProduct.qty += 1;
+
+                } else {
+
+                    cart.push(product);
+
+                }
+
+
+                localStorage.setItem(
+                    "cart",
+                    JSON.stringify(cart)
+                );
+
+
+                updateCartCount();
+
+
+                const originalText =
+                    button.innerText;
+
+
+                button.innerText =
+                    "Added ✓";
+
+
+                setTimeout(function () {
+
+                    button.innerText =
+                        originalText;
+
+                }, 800);
+
+            }
+        );
+
+    });
+
+
+
+    /* =========================================
+       PANCAKE CAROUSEL
+    ========================================= */
+
+    const pancakeGrid =
+        document.getElementById("pancake-grid");
+
+
+    const pancakePrev =
+        document.getElementById("pancake-prev");
+
+
+    const pancakeNext =
+        document.getElementById("pancake-next");
+
+
+    if (
+        pancakeGrid &&
+        pancakePrev &&
+        pancakeNext
+    ) {
+
+        console.log(
+            "Pancake carousel loaded"
+        );
+
+
+        function getCardWidth() {
+
+            const card =
+                pancakeGrid.querySelector(
+                    ".product-card"
+                );
+
+
+            if (!card) {
+                return 300;
+            }
+
+
+            const cardWidth =
+                card.offsetWidth;
+
+
+            const styles =
+                window.getComputedStyle(
+                    pancakeGrid
+                );
+
+
+            const gap =
+                parseFloat(
+                    styles.columnGap
+                ) ||
+                parseFloat(
+                    styles.gap
+                ) ||
+                0;
+
+
+            return cardWidth + gap;
+
+        }
+
+
+        pancakeNext.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                const amount =
+                    getCardWidth();
+
+
+                pancakeGrid.scrollLeft +=
+                    amount;
+
+
+                console.log(
+                    "Next clicked:",
+                    pancakeGrid.scrollLeft
+                );
+
+            }
+        );
+
+
+        pancakePrev.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                const amount =
+                    getCardWidth();
+
+
+                pancakeGrid.scrollLeft -=
+                    amount;
+
+
+                console.log(
+                    "Previous clicked:",
+                    pancakeGrid.scrollLeft
+                );
+
+            }
+        );
+
+
+        /* =====================================
+           MOUSE DRAG SUPPORT
+        ===================================== */
+
+        let isDragging = false;
+
+        let startX = 0;
+
+        let startScrollLeft = 0;
+
+
+        pancakeGrid.addEventListener(
+            "mousedown",
+            function (event) {
+
+                isDragging = true;
+
+                pancakeGrid.classList.add(
+                    "dragging"
+                );
+
+
+                startX = event.pageX;
+
+                startScrollLeft =
+                    pancakeGrid.scrollLeft;
+
+            }
+        );
+
+
+        pancakeGrid.addEventListener(
+            "mouseleave",
+            function () {
+
+                isDragging = false;
+
+                pancakeGrid.classList.remove(
+                    "dragging"
+                );
+
+            }
+        );
+
+
+        pancakeGrid.addEventListener(
+            "mouseup",
+            function () {
+
+                isDragging = false;
+
+                pancakeGrid.classList.remove(
+                    "dragging"
+                );
+
+            }
+        );
+
+
+        pancakeGrid.addEventListener(
+            "mousemove",
+            function (event) {
+
+                if (!isDragging) {
+                    return;
+                }
+
+
+                event.preventDefault();
+
+
+                const currentX =
+                    event.pageX;
+
+
+                const distance =
+                    currentX - startX;
+
+
+                pancakeGrid.scrollLeft =
+                    startScrollLeft - distance;
+
+            }
+        );
+
+
+        /* =====================================
+           TOUCH / MOBILE SWIPE
+        ===================================== */
+
+        let touchStartX = 0;
+
+        let touchStartScrollLeft = 0;
+
+
+        pancakeGrid.addEventListener(
+            "touchstart",
+            function (event) {
+
+                touchStartX =
+                    event.touches[0].pageX;
+
+
+                touchStartScrollLeft =
+                    pancakeGrid.scrollLeft;
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        pancakeGrid.addEventListener(
+            "touchmove",
+            function (event) {
+
+                const currentX =
+                    event.touches[0].pageX;
+
+
+                const distance =
+                    currentX - touchStartX;
+
+
+                pancakeGrid.scrollLeft =
+                    touchStartScrollLeft -
+                    distance;
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    }
+
+
+
+    /* =========================================
+       DESSERT CAROUSEL
+    ========================================= */
+
+    const dessertGrid =
+        document.getElementById(
+            "dessert-grid"
+        );
+
+
+    const dessertPrev =
+        document.getElementById(
+            "dessert-prev"
+        );
+
+
+    const dessertNext =
+        document.getElementById(
+            "dessert-next"
+        );
+
+
+    if (
+        dessertGrid &&
+        dessertPrev &&
+        dessertNext
+    ) {
+
+        console.log(
+            "Dessert carousel loaded"
+        );
+
+
+        /* =====================================
+           GET DESSERT CARD WIDTH
+        ===================================== */
+
+        function getDessertCardWidth() {
+
+            const card =
+                dessertGrid.querySelector(
+                    ".product-card"
+                );
+
+
+            if (!card) {
+                return 300;
+            }
+
+
+            const cardWidth =
+                card.offsetWidth;
+
+
+            const styles =
+                window.getComputedStyle(
+                    dessertGrid
+                );
+
+
+            const gap =
+                parseFloat(
+                    styles.columnGap
+                ) ||
+                parseFloat(
+                    styles.gap
+                ) ||
+                0;
+
+
+            return cardWidth + gap;
+
+        }
+
+
+
+        /* =====================================
+           NEXT DESSERT
+        ===================================== */
+
+        dessertNext.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                dessertGrid.scrollLeft +=
+                    getDessertCardWidth();
+
+            }
+        );
+
+
+
+        /* =====================================
+           PREVIOUS DESSERT
+        ===================================== */
+
+        dessertPrev.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                dessertGrid.scrollLeft -=
+                    getDessertCardWidth();
+
+            }
+        );
+
+
+
+        /* =====================================
+           DESSERT MOUSE DRAG
+        ===================================== */
+
+        let dessertDragging = false;
+
+        let dessertStartX = 0;
+
+        let dessertStartScrollLeft = 0;
+
+
+        dessertGrid.addEventListener(
+            "mousedown",
+            function (event) {
+
+                dessertDragging = true;
+
+                dessertGrid.classList.add(
+                    "dragging"
+                );
+
+
+                dessertStartX =
+                    event.pageX;
+
+
+                dessertStartScrollLeft =
+                    dessertGrid.scrollLeft;
+
+            }
+        );
+
+
+        dessertGrid.addEventListener(
+            "mouseleave",
+            function () {
+
+                dessertDragging = false;
+
+                dessertGrid.classList.remove(
+                    "dragging"
+                );
+
+            }
+        );
+
+
+        dessertGrid.addEventListener(
+            "mouseup",
+            function () {
+
+                dessertDragging = false;
+
+                dessertGrid.classList.remove(
+                    "dragging"
+                );
+
+            }
+        );
+
+
+        dessertGrid.addEventListener(
+            "mousemove",
+            function (event) {
+
+                if (!dessertDragging) {
+                    return;
+                }
+
+
+                event.preventDefault();
+
+
+                const currentX =
+                    event.pageX;
+
+
+                const distance =
+                    currentX - dessertStartX;
+
+
+                dessertGrid.scrollLeft =
+                    dessertStartScrollLeft -
+                    distance;
+
+            }
+        );
+
+
+
+        /* =====================================
+           DESSERT TOUCH / MOBILE SWIPE
+        ===================================== */
+
+        let dessertTouchStartX = 0;
+
+        let dessertTouchStartScrollLeft = 0;
+
+
+        dessertGrid.addEventListener(
+            "touchstart",
+            function (event) {
+
+                dessertTouchStartX =
+                    event.touches[0].pageX;
+
+
+                dessertTouchStartScrollLeft =
+                    dessertGrid.scrollLeft;
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        dessertGrid.addEventListener(
+            "touchmove",
+            function (event) {
+
+                const currentX =
+                    event.touches[0].pageX;
+
+
+                const distance =
+                    currentX -
+                    dessertTouchStartX;
+
+
+                dessertGrid.scrollLeft =
+                    dessertTouchStartScrollLeft -
+                    distance;
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    } else {
+
+        console.error(
+            "Dessert carousel elements were not found."
+        );
+
+        console.log(
+            "dessertGrid:",
+            dessertGrid
+        );
+
+        console.log(
+            "dessertPrev:",
+            dessertPrev
+        );
+
+        console.log(
+            "dessertNext:",
+            dessertNext
+        );
+
+    }
+
+
+
+    /* =========================================
+       FLOATING CART
+    ========================================= */
+
+    const floatingCart =
+        document.getElementById(
+            "floating-cart"
+        );
+
+
+    if (floatingCart) {
+
+        floatingCart.addEventListener(
+            "click",
+            function () {
+
+                window.location.href =
+                    "/cart/";
+
+            }
+        );
+
+    }
+
+});
+
+
+
+/* =================================================
+   UPDATE CART COUNT
+================================================= */
+
+function updateCartCount() {
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem("cart")
+        ) || [];
+
+
+    let total = 0;
+
+
+    cart.forEach(function (item) {
+
+        total +=
+            parseInt(item.qty) || 0;
+
+    });
+
+
+    const cartCount =
+        document.getElementById(
+            "cart-count"
+        );
+
+
+    if (cartCount) {
+
+        cartCount.innerText =
+            total;
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<style>
+body {
+    color: #fff;
+    background: #121212;
+}
+
+.payment-title {
+    text-align: center;
+    margin: 40px 0 25px;
+    font-weight: 700;
+    font-size: 32px;
+}
+
+.payment-box {
+    max-width: 550px;
+    margin: 0 auto;
+    background: rgba(28, 28, 28, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.order-info {
+    background: #242424;
+    padding: 18px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+.order-info p {
+    margin: 8px 0;
+}
+
+.payment-option {
+    display: block;
+    background: #242424;
+    padding: 16px;
+    margin: 12px 0;
+    border-radius: 12px;
+    cursor: pointer;
+    border: 1px solid #333;
+}
+
+.payment-option:hover {
+    border-color: #ffc107;
+}
+
+.payment-option input {
+    margin-right: 10px;
+}
+
+.btn-main {
+    background: linear-gradient(45deg, #ffc107, #ff9800);
+    border: none;
+    color: black;
+    padding: 14px;
+    border-radius: 30px;
+    width: 100%;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.btn-main:hover {
+    opacity: 0.9;
+}
+</style>
+
+
+<h2 class="payment-title">💳 Payment</h2>
+
+<div class="payment-box">
+
+    <div class="order-info">
+
+        <h4>Order Summary</h4>
+
+        <p>
+            <strong>Order ID:</strong>
+            #{{ order.id }}
+        </p>
+
+        <p>
+            <strong>Total Amount:</strong>
+            ₹{{ order.total }}
+        </p>
+
+    </div>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <h4>Select Payment Method</h4>
+
+        <label class="payment-option">
+            <input
+                type="radio"
+                name="payment_method"
+                value="COD"
+                required
+            >
+            💵 Cash on Delivery
+        </label>
+
+
+        <label class="payment-option">
+            <input
+                type="radio"
+                name="payment_method"
+                value="online"
+                required
+            >
+            💳 Online Payment
+        </label>
+
+
+        <button type="submit" class="btn-main">
+            Continue to Payment 🚀
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

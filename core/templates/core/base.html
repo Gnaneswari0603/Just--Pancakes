@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Just Pancakes</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #111;
+            color: white;
+        }
+
+        /* Navbar */
+        .custom-navbar {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+        }
+
+        /* Brand */
+        .navbar-brand {
+            color: #fff !important;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* Move items slightly left */
+        .navbar-nav {
+            margin-left: 40px;
+        }
+
+        /* Nav links */
+        .nav-link {
+            color: #ddd !important;
+            font-weight: 600;
+            margin-right: 25px;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        /* Hover underline effect */
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            background: #ffc107;
+            left: 0;
+            bottom: -5px;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Order button */
+        .btn-order {
+            background: linear-gradient(45deg, #ffc107, #ff9800);
+            border: none;
+            color: black;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 25px;
+            transition: 0.3s;
+        }
+
+        .btn-order:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 193, 7, 0.6);
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg custom-navbar">
+  <div class="container">
+
+    <!-- Logo -->
+    <a class="navbar-brand" href="{% url 'home' %}">🥞 Just Pancakes</a>
+
+    <!-- Toggle -->
+    <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menu -->
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav">
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'menu' %}">Menu</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'cart' %}">Cart</a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{% url 'menu' %}" class="btn btn-order"> Order Now</a>
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+<!-- 🔥 IMPORTANT: Content block -->
+<div class="container mt-4">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
